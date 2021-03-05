@@ -1,4 +1,4 @@
-MovieID,UserID,Rating
+userId,movieId,rating
 2,1,5
 4,23,5
 4,2,3
