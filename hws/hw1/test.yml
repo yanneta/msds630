@@ -21,7 +21,7 @@ jobs:
         pip install pytest
         pip install numpy
         pip install pandas
+        pip install scipy
     - name: Test with pytest
       run: |
         pytest test_tiny.py
-        pytest test_larger.py
