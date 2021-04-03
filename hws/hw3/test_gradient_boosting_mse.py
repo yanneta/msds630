@@ -1,27 +1,17 @@
-from adaboost import *
+import numpy as np
+
+from gradient_boosting_mse import *
 
 
-def test_parse_spambase_data():
-    y_test = np.array([1., -1., 1., 1., -1., -1., 1., 1., 1., -1.])
-    X, Y = parse_spambase_data("data/tiny.spam.train")
-    assert(np.array_equal(Y, y_test))
-    n, m = X.shape
-    assert(n == 10)
-    assert(m == 57)
+def test_train_predict():
+   X_train, y_train = load_dataset("data/tiny.rent.train")
+   X_val, y_val = load_dataset("data/tiny.rent.test")
 
-def test_adaboost():
-    X, Y = parse_spambase_data("data/tiny.spam.train")
-    trees, weights = adaboost(X, Y, 2)
-    y_hat_0 = trees[0].predict(X)
-    assert(len(trees) == 2)
-    assert(len(weights) == 2)
-    assert(isinstance(trees[0], DecisionTreeClassifier))
-    y_hat_true = np.array([ 1., -1.,  1.,  1., -1., -1., -1.,  1.,  1., -1.])
-    assert(np.array_equal(y_hat_0, y_hat_true))
+   y_mean, trees = gradient_boosting_mse(X_train, y_train, 5, max_depth=2, nu=0.1)
+   assert(np.around(y_mean, decimals=4)== 3839.1724)
+   
+   y_hat_train = gradient_boosting_predict(X_train, trees, y_mean, nu=0.1)
+   assert(np.around(r2_score(y_train, y_hat_train), decimals=4)==0.5527)
 
-def test_adaboost_predict():
-    x = np.array([[0, -1], [1, 0], [-1, 0]])
-    y = np.array([-1, 1, 1])
-    trees, weights = adaboost(x, y, 1)
-    pred = adaboost_predict(x, trees, weights)
-    assert(np.array_equal(pred, y))
+   y_hat = gradient_boosting_predict(X_val, trees, y_mean, nu=0.1)
+   assert(np.around(r2_score(y_val, y_hat), decimals=4)==0.5109)
