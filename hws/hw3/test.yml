@@ -1,0 +1,29 @@
+name: Test MSDS630 hw2
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up python 3
+      uses: actions/setup-python@v2
+    - name: Install libs
+      run: |
+        pip install torch==1.8.0+cpu torchvision==0.9.0+cpu torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+        pip install pytest
+        pip install numpy
+        pip install pandas
+        pip install sklearn
+    - name: Test with pytest
+      run: |
+        pytest test_adaboost.py
+        pytest test_gradient_boosting_mse.py 
