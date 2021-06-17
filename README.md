@@ -1,1 +1,1 @@
-# MSDS 630 Advanced Machine Learning USF
+# MSDS 630 Advanced Machine Learning University of San Francisco
