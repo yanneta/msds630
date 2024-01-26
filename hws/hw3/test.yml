@@ -2,7 +2,7 @@ name: Test MSDS630 hw2
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
